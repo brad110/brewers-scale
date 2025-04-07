@@ -22,8 +22,21 @@ class MultiScreenGui:
         # Creating images
         mainMenuImage = ImageTk.PhotoImage(Image.open("Assets/logo-removebg-preview.png"))
         buttonNormal = ImageTk.PhotoImage(Image.open("Assets/GreyButton.png").resize((100, 30)))
+
+
         americano = ImageTk.PhotoImage(Image.open("Assets/americano.png").resize((150, 150)))
-        
+        cappuccino = ImageTk.PhotoImage(Image.open("Assets/cappuccino.png").resize((150, 150)))
+        frappuccino = ImageTk.PhotoImage(Image.open("Assets/frappuccino.png").resize((150, 150)))
+        dalgona = ImageTk.PhotoImage(Image.open("Assets/dalgona.png").resize((150, 150)))
+        longBlack = ImageTk.PhotoImage(Image.open("Assets/longBlack.png").resize((150, 150)))
+        macchiato = ImageTk.PhotoImage(Image.open("Assets/macchiato.png").resize((150, 150)))
+        cortado = ImageTk.PhotoImage(Image.open("Assets/cortado.png").resize((150, 150)))
+        ristretto = ImageTk.PhotoImage(Image.open("Assets/ristretto.png").resize((150, 150)))
+        affogato = ImageTk.PhotoImage(Image.open("Assets/affogato.png").resize((150, 150)))
+        frappe = ImageTk.PhotoImage(Image.open("Assets/frappe.png").resize((150, 150)))
+        redEye = ImageTk.PhotoImage(Image.open("Assets/redEye.png").resize((150, 150)))
+        irish = ImageTk.PhotoImage(Image.open("Assets/irish.png").resize((150, 150)))
+        customImage = ImageTk.PhotoImage(Image.open("Assets/customImage.png").resize((150, 150)))
 
         # coffee names for different buttons
         coffeeNames = ["Americano", "Cappuccino", "Frappuccino", "Dalgona", "Long Black", 
@@ -33,6 +46,7 @@ class MultiScreenGui:
                         "Ingredients: Dalgona", "Ingredients: Long Black", "Ingredients: Macchiato", "Ingredients: Cortado",
                         "Ingredients: Ristretto", "Ingredients: Affogato", "Ingredients: Frappe", "Ingredients: Red Eye", 
                         "Ingredients: Irish", "[Insert text]"]
+        coffeeImages = [americano, cappuccino, frappuccino, dalgona, longBlack, macchiato, cortado, ristretto, affogato, frappe, redEye, irish, customImage]
                         
 
         # creates buttons
@@ -43,14 +57,14 @@ class MultiScreenGui:
             btn.pack(pady=5, fill=tk.X)
         
         # creates screens
-        for i, (name, description) in enumerate(zip(coffeeNames, ingredientDescriptions), start=1):
+        for i, (name, description, image) in enumerate(zip(coffeeNames, ingredientDescriptions, coffeeImages), start=1):
             frame = tk.Frame(self.contentFrame, bg='white')
             
             coffeeName = tk.Label(frame, text=name, height = 2, width = 22, borderwidth = 10, relief='ridge', font=("Georgia", 33), bg='grey')
 
             # (ignore this line) for i, image in enumerate(images, start=1):
-            coffeeImage = tk.Label(frame, image=americano, bg='WHITE', borderwidth=6, relief='ridge')
-            coffeeImage.image = americano
+            coffeeImage = tk.Label(frame, image=image, bg='WHITE', borderwidth=6, relief='ridge')
+            coffeeImage.image = image
             
             backButton = tk.Button(frame, text="Back to Main Menu", command=lambda: self.showScreen(0))
             

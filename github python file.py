@@ -22,12 +22,12 @@ class MultiScreenGui:
         # Creating images
         mainMenuImage = ImageTk.PhotoImage(Image.open("Assets/logo-removebg-preview.png"))
         buttonNormal = ImageTk.PhotoImage(Image.open("Assets/GreyButton.png").resize((100, 30)))
-        placeholder = ImageTk.PhotoImage(Image.open("Assets/placeholder.png").resize((200, 200)))
+        americano = ImageTk.PhotoImage(Image.open("Assets/americano.png").resize((200, 200)))
         
 
         # coffee names for different buttons
         coffeeNames = ["Americano", "Cappuccino", "Frappuccino", "Dalgona", "Long Black", 
-                        "Macchiato", "Cortado", "Ristretto", "Affogato", "Frappe", "Red Eye", "Irish",]
+                        "Macchiato", "Cortado", "Ristretto", "Affogato", "Frappe", "Red Eye", "Irish", "New"]
 
         # creates buttons
         self.screens = {}
@@ -36,21 +36,32 @@ class MultiScreenGui:
             btn.image = buttonNormal
             btn.pack(pady=5, fill=tk.X)
 
-        # creates screens 
-        for i, name in enumerate(coffeeNames, start=1):
+        ingredientDescriptions = ["Ingredients: Americano", "Ingredients: Cappuchino", "Ingredients: Frappuchino", 
+                        "Ingredients: Dalgona", "Ingredients: Long Black", "Ingredients: Macchiato", "Ingredients: Cortado",
+                        "Ingredients: Ristretto", "Ingredients: Affogato", "Ingredients: Frappe", "Ingredients: Red Eye", 
+                        "Ingredients: Irish", "[Insert text]"]
+        
+        # creates screens
+        for i, (name, description) in enumerate(zip(coffeeNames, ingredientDescriptions), start=1):
             frame = tk.Frame(self.contentFrame, bg='white')
             
             coffeeName = tk.Label(frame, text=name, height = 2, width = 22, borderwidth = 10, relief='ridge', font=("Georgia", 33), bg='grey')
 
             # (ignore this line) for i, image in enumerate(images, start=1):
-            coffeeImage = tk.Label(frame, image=placeholder, bg='WHITE', borderwidth=6, relief='ridge')
-            coffeeImage.image = placeholder
+            coffeeImage = tk.Label(frame, image=americano, bg='WHITE', borderwidth=6, relief='ridge')
+            coffeeImage.image = americano
             
             backButton = tk.Button(frame, text="Back to Main Menu", command=lambda: self.showScreen(0))
- 
+            
+            historyText = tk.Label(frame, text='History', height =5, width =34, borderwidth = 5, relief='ridge', font=("georgia", 22), bg='grey', anchor='nw')
+            
+            ingredientText = tk.Label(frame, text=description, height =5, width =34, borderwidth = 5, relief='ridge', font=("georgia", 22), bg='grey', anchor='nw')
             # time for place
-            coffeeImage.place(x=20, y=20)
-            coffeeName.place(x=330, y=30)
+            coffeeImage.place(x=60, y=20)
+            coffeeName.place(x=370, y=30)
+            backButton.place(x=500, y=0)
+            ingredientText.place(x=372, y=181)
+            historyText.place(x=372, y=382)
             
             
             self.screens[i] = frame
@@ -65,7 +76,7 @@ class MultiScreenGui:
         self.screens[0] = self.mainScreen
         
         self.showScreen(0) #shows main screen
-
+        
     def showScreen(self, screenNumber):
         # removes current frame so it can display new screen
         for widget in self.contentFrame.winfo_children():

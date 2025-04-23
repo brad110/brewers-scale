@@ -38,13 +38,19 @@ class MultiScreenGui:
         mainMenuImage = ImageTk.PhotoImage(Image.open("Assets/logo-removebg-preview.png"))
         buttonNormal = ImageTk.PhotoImage(Image.open("Assets/GreyButton.png").resize((100, 30)))
 
+        # value to store what button is active to show different button
+        self.activeButton = None
+        
         # creates buttons
         self.screens = {}
+        self.buttonList = []
+
         for i, name in enumerate(coffeeNames, start=1):
-            btn = tk.Button(self.menuFrame, text=name, font=("Georgia", 12), bg='lightgray', image=buttonNormal, borderwidth=0, height = 45, width= 190,
-                            command=lambda i=i: self.showScreen(i), compound='center')
+            btn = tk.Button(self.menuFrame, text=name, font=("Georgia", 12), bg='lightgray', image=buttonNormal, borderwidth=0, height = 45, width= 190, compound='center')
             btn.image = buttonNormal
             btn.pack(pady=1, fill=tk.X)
+            btn.configure(command=lambda i=i, b=btn: self.buttonPressed(i, b))
+            self.buttonList.append(btn)
 
         # creates screens
         for i, (name, description, image, drink) in enumerate(zip(coffeeNames, ingredientDescriptions, imagePaths, drinkDescriptions), start=1):
@@ -115,6 +121,19 @@ class MultiScreenGui:
             widget.pack_forget()
         # displays the selected screen
         self.screens[screenNumber].pack(expand=True, fill=tk.BOTH)
+    
+    # function for detecting if button is pressed
+    def buttonPressed(self, screenNumber, button):
+        # Reset previous active button color
+        if self.activeButton:
+            self.activeButton.config(bg='lightgray')
+
+        # Highlight the new active button
+        button.config(bg='darkgray')
+        self.activeButton = button
+
+        # Show the corresponding screen
+        self.showScreen(screenNumber)
 
 
 ##############################################################################

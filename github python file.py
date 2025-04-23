@@ -14,29 +14,47 @@ class MultiScreenGui:
         background_image = ImageTk.PhotoImage(Image.open("Assets/background.png").resize((1200, 650)))
 
         # Creates a frame for the buttons on the left
-        self.menuFrame = tk.Frame(root, width=200, bg='lightgray')
-        self.menuFrame.pack(side=tk.LEFT, fill=tk.Y)
+        menuContainer = tk.Frame(root, width=200, bg='lightgray')
+        menuContainer.pack(side=tk.LEFT, fill=tk.Y)
 
-        # creates a frame for the content on the right
-        self.contentFrame = tk.Frame(root, bg='blue')
-        self.contentFrame.pack(side=tk.RIGHT, expand=True, fill=tk.BOTH)
+        menuCanvas = tk.Canvas(menuContainer, bg='lightgray', width=200, highlightthickness=0)
+        menuCanvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
+        scrollbar = tk.Scrollbar(menuContainer, orient=tk.VERTICAL, command=menuCanvas.yview)
+        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+        menuCanvas.configure(yscrollcommand=scrollbar.set)
+        menuCanvas.bind('<Configure>', lambda e: menuCanvas.configure(scrollregion=menuCanvas.bbox("all")))
+
+        self.menuFrame = tk.Frame(menuCanvas, bg='lightgray')
+        menuCanvas.create_window((0, 0), window=self.menuFrame, anchor="nw")
+
+
+        self.mainFrame = tk.Frame(root, bg='blue')
+        self.mainFrame.pack(side=tk.RIGHT, expand=True, fill=tk.BOTH)
        
 
         # Creating images
         mainMenuImage = ImageTk.PhotoImage(Image.open("Assets/logo-removebg-preview.png"))
         buttonNormal = ImageTk.PhotoImage(Image.open("Assets/GreyButton.png").resize((100, 30)))
 
+        # value to store what button is active to show different button
+        self.activeButton = None
+        
         # creates buttons
         self.screens = {}
+        self.buttonList = []
+
         for i, name in enumerate(coffeeNames, start=1):
-            btn = tk.Button(self.menuFrame, text=name, font=("Georgia", 12), bg='lightgray', image=buttonNormal, borderwidth=0,
-                            command=lambda i=i: self.showScreen(i), compound='center')
+            btn = tk.Button(self.menuFrame, text=name, font=("Georgia", 12), bg='lightgray', image=buttonNormal, borderwidth=0, height = 45, width= 190, compound='center')
             btn.image = buttonNormal
-            btn.pack(pady=5, fill=tk.X)
+            btn.pack(pady=1, fill=tk.X)
+            btn.configure(command=lambda i=i, b=btn: self.buttonPressed(i, b))
+            self.buttonList.append(btn)
 
         # creates screens
         for i, (name, description, image, drink) in enumerate(zip(coffeeNames, ingredientDescriptions, imagePaths, drinkDescriptions), start=1):
-            frame = tk.Frame(self.contentFrame)
+            frame = tk.Frame(self.mainFrame)
             bg_image = Image.open("Assets/background.png").resize((1200, 650))  # or whatever your frame size is
             bg_image_tk = ImageTk.PhotoImage(bg_image)
             background_label = tk.Label(frame, image=bg_image_tk)
@@ -87,7 +105,7 @@ class MultiScreenGui:
             self.screens[i] = frame
 
         # Main menu screen
-        self.mainScreen = tk.Frame(self.contentFrame, bg='white')
+        self.mainScreen = tk.Frame(self.mainFrame, bg='white')
         mainLabel = tk.Label(self.mainScreen, text="Brewer's Scale", font=("Georgia", 20), bg='white')
         mainLabel.pack(pady=20)
         my_label = tk.Label(self.mainScreen, image=mainMenuImage, bg='WHITE')
@@ -99,10 +117,23 @@ class MultiScreenGui:
 
     def showScreen(self, screenNumber):
         # removes current frame so it can display new screen
-        for widget in self.contentFrame.winfo_children():
+        for widget in self.mainFrame.winfo_children():
             widget.pack_forget()
         # displays the selected screen
         self.screens[screenNumber].pack(expand=True, fill=tk.BOTH)
+    
+    # function for detecting if button is pressed
+    def buttonPressed(self, screenNumber, button):
+        # Reset previous active button color
+        if self.activeButton:
+            self.activeButton.config(bg='lightgray')
+
+        # Highlight the new active button
+        button.config(bg='darkgray')
+        self.activeButton = button
+
+        # Show the corresponding screen
+        self.showScreen(screenNumber)
 
 
 ##############################################################################

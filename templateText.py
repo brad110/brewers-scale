@@ -1,10 +1,10 @@
 #
 imagePaths = ["Assets/americano.png", "Assets/cappuccino.png", "Assets/frappuccino.png", "Assets/dalgona.png", "Assets/longBlack.png",
                       "Assets/macchiato.png", "Assets/cortado.png", "Assets/ristretto.png", "Assets/affogato.png", "Assets/frappe.png",
-                      "Assets/redEye.png", "Assets/irish.png", "Assets/customImage.png"]
+                      "Assets/redEye.png", "Assets/irish.png"]
 
 coffeeNames = ["Americano", "Cappuccino", "Frappuccino", "Dalgona", "Long Black",
-                        "Macchiato", "Cortado", "Ristretto", "Affogato", "Frappe", "Red Eye", "Irish", "New"]
+                        "Macchiato", "Cortado", "Ristretto", "Affogato", "Frappe", "Red Eye", "Irish"]
 
 ingredientDescriptions = ["Ingredients: Shot of Espresso, hot water.", 
                           "Ingredients: Shot of Espresso, steamed milk, foam.", 
@@ -17,8 +17,7 @@ ingredientDescriptions = ["Ingredients: Shot of Espresso, hot water.",
                           "Ingredients: Espresso, vanilla ice cream.", 
                           "Ingredients: Instant coffee, cold water, sugar, ice.", 
                           "Ingredients: Drip coffee, Espresso.",
-                          "Ingredients: Hot brewed coffee, Irish whiskey, sugar, whipped cream", 
-                          "[Insert text]"]
+                          "Ingredients: Hot brewed coffee, Irish whiskey, sugar, whipped cream"]
                           
 drinkDescriptions = ["Description: A simple and smooth coffee, the Americano is made by adding hot water to a shot of espresso, resulting in a drink that retains espresso’s bold flavor but with a lighter, more diluted texture. It’s perfect for those who enjoy black coffee with a milder intensity.",
                      "Description: A classic Italian favorite, cappuccino is made with one-third espresso, one-third steamed milk, and one-third milk foam. This creates a beautifully layered drink that is rich and creamy while still allowing the bold espresso flavor to shine through.",
@@ -31,5 +30,4 @@ drinkDescriptions = ["Description: A simple and smooth coffee, the Americano is 
                      "Description: A delightful fusion of coffee and dessert, affogato is made by pouring a shot of hot espresso over a scoop of vanilla ice cream. The contrast between the hot coffee and cold ice cream creates a deliciously creamy and bittersweet treat.",
                      "Description: Originating from Greece, frappé is a foamy, iced coffee made by blending instant coffee, sugar, cold water, and ice. It’s a strong and frothy drink, commonly enjoyed as a refreshing pick-me-up on hot days.",
                      "Description: For those who need an extra caffeine boost, the red eye combines a shot of espresso with a cup of regular drip coffee. This results in a highly caffeinated drink that maintains the full-bodied flavor of brewed coffee with an espresso kick.",
-                     "Description: A warm, boozy delight, Irish coffee blends hot brewed coffee with Irish whiskey and sugar, then tops it with a layer of thick whipped cream. It’s a comforting and slightly sweet coffee cocktail, perfect for chilly days or after-dinner indulgence.",
-                     "[Insert Text]"]
+                     "Description: A warm, boozy delight, Irish coffee blends hot brewed coffee with Irish whiskey and sugar, then tops it with a layer of thick whipped cream. It’s a comforting and slightly sweet coffee cocktail, perfect for chilly days or after-dinner indulgence."]

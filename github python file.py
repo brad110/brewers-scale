@@ -205,9 +205,9 @@ class MultiScreenGui:
 
         weightLabel = tk.Label(frame, text="Weighed", height=2, width=9, borderwidth=5, relief='ridge', font=("georgia", 19), bg='lightblue', wraplength=600)
 
-        descriptionText = tk.Label(frame, text=description, height=7, width=36, borderwidth=5, relief='ridge', font=("georgia", 20), bg='lightgrey', anchor='nw', wraplength=570)
+        descriptionText = tk.Label(frame, text=description, height=7, width=36, borderwidth=5, relief='ridge', font=("georgia", 20), bg='lightgrey', wraplength=570)
 
-        ingredientText = tk.Label(frame, text=description, height=5, width=34, borderwidth=5, relief='ridge', font=("georgia", 22), bg='lightgrey', anchor='nw', wraplength=570)
+        ingredientText = tk.Label(frame, text=ingredients, height=5, width=34, borderwidth=5, relief='ridge', font=("georgia", 22), bg='lightgrey', wraplength=570)
 
         # Positioning widgets
         coffeeImageLabel.place(x=60, y=20)

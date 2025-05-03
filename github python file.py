@@ -41,6 +41,7 @@ class MultiScreenGui:
         # Creating images
         mainMenuImage = ImageTk.PhotoImage(Image.open("Assets/logo-removebg-preview.png"))
         self.buttonNormal = ImageTk.PhotoImage(Image.open("Assets/GreyButton.png").resize((100, 30)))
+        self.homebutton = ImageTk.PhotoImage(Image.open("Assets/homebutton.png").resize((60, 60)))
 
         # value to store what button is active to show different button
         self.activeButton = None
@@ -189,7 +190,8 @@ class MultiScreenGui:
         coffeeImageLabel = tk.Label(frame, image=coffeeImage, bg='WHITE', borderwidth=6, relief='ridge')
         coffeeImageLabel.image = coffeeImage  # Keep reference to the image to prevent garbage collection
 
-        backButton = tk.Button(frame, text="Back to Main Menu", command=lambda: self.showScreen(0))
+        backButton = tk.Button(frame, text="Back to Main Menu", bg="blue", image=self.homebutton, borderwidth=0, height=57, width=57, command=lambda: self.showScreen(0))
+        backButton.image = self.homebutton
         delButton = tk.Button(frame, text="Delete Drink", fg="red", command=lambda: self.delCustomDrink(name, index)) if is_custom else None
 
         lightButton = tk.Button(frame, text="Light", width=19)
@@ -210,19 +212,19 @@ class MultiScreenGui:
         ingredientText = tk.Label(frame, text=ingredients, height=5, width=34, borderwidth=5, relief='ridge', font=("georgia", 22), bg='lightgrey', wraplength=570)
 
         # Positioning widgets
-        coffeeImageLabel.place(x=60, y=20)
+        coffeeImageLabel.place(x=70, y=20)
         coffeeName.place(x=370, y=30)
-        backButton.place(x=500, y=0)
+        backButton.place(x=2, y=00)
         ingredientText.place(x=372, y=181)
         descriptionText.place(x=372, y=382)
-        ratioDisplay.place(x=67, y=200)
-        strengthLabel.place(x=67, y=320)
-        weightLabel.place(x=67, y=500)
-        lightButton.place(x=68, y=390)
-        standardButton.place(x=68, y=415)
-        strongButton.place(x=68, y=440)
-        groundsButton.place(x=68, y=570)
-        waterButton.place(x=68, y=595)
+        ratioDisplay.place(x=77, y=200)
+        strengthLabel.place(x=77, y=320)
+        weightLabel.place(x=77, y=500)
+        lightButton.place(x=78, y=390)
+        standardButton.place(x=78, y=415)
+        strongButton.place(x=78, y=440)
+        groundsButton.place(x=78, y=570)
+        waterButton.place(x=78, y=595)
         if delButton:
             delButton.place(x=700, y=0)
 

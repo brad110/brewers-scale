@@ -8,6 +8,9 @@ import os
 
 CUSTOMDRINKSFILE = "customDrinks.json"
 
+strengthValue = strengthStrong
+sizeValue = sizeNormal
+
 class MultiScreenGui:
     def __init__(self, root):
         self.root = root
@@ -51,6 +54,7 @@ class MultiScreenGui:
         self.buttonList = []
         self.customDrinks = self.loadCustomDrinks()
 
+
         for i, name in enumerate(coffeeNames, start=1):
             btn = tk.Button(self.menuFrame, text=name, font=("Georgia", 12), bg='lightgray', image=self.buttonNormal, borderwidth=0, height = 45, width= 190, compound='center')
             btn.image = self.buttonNormal
@@ -59,8 +63,8 @@ class MultiScreenGui:
             self.buttonList.append(btn)
 
         # loop creates drink screen for just the default drinks
-        for i, (name, description, image, drink) in enumerate(zip(coffeeNames, ingredientDescriptions, imagePaths, drinkDescriptions), start=1):
-            self.createScreen(i, name, description, drink, image)
+        for i, (name, description, image, drink, r1, r2) in enumerate(zip(coffeeNames, ingredientDescriptions, imagePaths, drinkDescriptions, ratioCounterValues1, ratioCounterValues2), start=1):
+            self.createScreen(i, name, description, drink, image, r1, r2)
 
         # loop creates screens for custom drinks in json file
         customDrinkIndex = len(coffeeNames) + 1
@@ -97,6 +101,19 @@ class MultiScreenGui:
         with open(CUSTOMDRINKSFILE, 'w') as file:
             json.dump(self.customDrinks, file, indent=4)
     
+    def changeStrengthValue(self, newStrength, ratioDisplay, r1, r2):
+            global strengthValue
+            strengthValue = newStrength
+            ratio1 = round(r1 * strengthValue * sizeValue, 1)
+            ratio2 = round(r2 * strengthValue * sizeValue, 1)
+            ratioDisplay.config(text=f"{ratio1}:{ratio2}")
+            
+    def changeSizeValue(self, newSize, ratioDisplay, r1, r2):
+            global sizeValue
+            sizeValue = newSize
+            ratio1 = round(r1 * strengthValue * sizeValue, 1)
+            ratio2 = round(r2 * strengthValue * sizeValue, 1)
+            ratioDisplay.config(text=f"{ratio1}:{ratio2}")
     
     # pop up screen for adding drink
     def customDrinkPopup(self):
@@ -175,7 +192,7 @@ class MultiScreenGui:
         self.createScreen(screenID, name, data["ingredients"], data["description"], data["image"], is_custom=True)
     
     # create drink screen for defaults and customs
-    def createScreen(self, index, name, ingredients, description, imagePath, is_custom = False):
+    def createScreen(self, index, name, ingredients, description, imagePath, r1, r2, is_custom = False):
         frame = tk.Frame(self.mainFrame)
         bg_image = Image.open("Assets/background.png").resize((1200, 650))  # or whatever your frame size is
         bg_image_tk = ImageTk.PhotoImage(bg_image)
@@ -194,18 +211,19 @@ class MultiScreenGui:
         backButton.image = self.homebutton
         delButton = tk.Button(frame, text="Delete Drink", fg="red", command=lambda: self.delCustomDrink(name, index)) if is_custom else None
 
-        lightButton = tk.Button(frame, text="Light", width=19)
-        standardButton = tk.Button(frame, text="Standard", width=19)
-        strongButton = tk.Button(frame, text="Strong", width=19)
+        lightButton = tk.Button(frame, text="Light", width=19, command=lambda: self.changeStrengthValue(strengthLight, ratioDisplay, r1, r2))
+        standardButton = tk.Button(frame, text="Standard", width=19, command=lambda: self.changeStrengthValue(strengthStandard, ratioDisplay, r1, r2))
+        strongButton = tk.Button(frame, text="Strong", width=19, command=lambda: self.changeStrengthValue(strengthStrong, ratioDisplay, r1, r2))
 
-        groundsButton = tk.Button(frame, text="Beans / Grounds", width=19)
-        waterButton = tk.Button(frame, text="Water", width=19)
+        smallButton = tk.Button(frame, text="Small", width=19, command=lambda: self.changeSizeValue(sizeSmall, ratioDisplay, r1, r2))
+        normalButton = tk.Button(frame, text="Normal", width=19, command=lambda: self.changeSizeValue(sizeNormal, ratioDisplay, r1, r2))
+        largebutton= tk.Button(frame, text="Large", width=19, command=lambda: self.changeSizeValue(sizeLarge, ratioDisplay, r1, r2))
 
-        ratioDisplay = tk.Label(frame, text="X:X", height=3, width=9, borderwidth=5, relief='ridge', font=("georgia", 19), bg='orange', wraplength=600)
+        ratioDisplay = tk.Label(frame, text=f"{r1 * strengthValue * sizeValue}:{r2 * strengthValue * sizeValue}", height=3, width=9, borderwidth=5, relief='ridge', font=("georgia", 19), bg='orange', wraplength=600)
 
         strengthLabel = tk.Label(frame, text="Strength", height=2, width=9, borderwidth=5, relief='ridge', font=("georgia", 19), bg='lightblue', wraplength=600)
 
-        weightLabel = tk.Label(frame, text="Weighed", height=2, width=9, borderwidth=5, relief='ridge', font=("georgia", 19), bg='lightblue', wraplength=600)
+        weightLabel = tk.Label(frame, text="Size", height=2, width=9, borderwidth=5, relief='ridge', font=("georgia", 19), bg='lightblue', wraplength=600)
 
         descriptionText = tk.Label(frame, text=description, height=7, width=36, borderwidth=5, relief='ridge', font=("georgia", 20), bg='lightgrey', wraplength=570)
 
@@ -223,8 +241,9 @@ class MultiScreenGui:
         lightButton.place(x=78, y=390)
         standardButton.place(x=78, y=415)
         strongButton.place(x=78, y=440)
-        groundsButton.place(x=78, y=570)
-        waterButton.place(x=78, y=595)
+        smallButton.place(x=78, y=570)
+        normalButton.place(x=78, y=595)
+        largebutton.place(x=78, y=620)
         if delButton:
             delButton.place(x=700, y=0)
 

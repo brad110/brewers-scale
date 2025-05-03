@@ -31,3 +31,16 @@ drinkDescriptions = ["Description: A simple and smooth coffee, the Americano is 
                      "Description: Originating from Greece, frappé is a foamy, iced coffee made by blending instant coffee, sugar, cold water, and ice. It’s a strong and frothy drink, commonly enjoyed as a refreshing pick-me-up on hot days.",
                      "Description: For those who need an extra caffeine boost, the red eye combines a shot of espresso with a cup of regular drip coffee. This results in a highly caffeinated drink that maintains the full-bodied flavor of brewed coffee with an espresso kick.",
                      "Description: A warm, boozy delight, Irish coffee blends hot brewed coffee with Irish whiskey and sugar, then tops it with a layer of thick whipped cream. It’s a comforting and slightly sweet coffee cocktail, perfect for chilly days or after-dinner indulgence."]
+
+ratioCounterValues1 = [1, 2]
+ratioCounterValues2 = [5, 5]     
+
+strengthLight = 1
+strengthStandard = 1.5
+strengthStrong = 2
+
+sizeSmall = 0.6
+sizeNormal = 1
+sizeLarge =  1.3
+
+# 8, 12, 16 <- oz 

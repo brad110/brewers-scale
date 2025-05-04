@@ -8,7 +8,7 @@ import os
 
 CUSTOMDRINKSFILE = "customDrinks.json"
 
-strengthValue = strengthStrong
+strengthValue = strengthStandard
 sizeValue = sizeNormal
 
 class MultiScreenGui:
@@ -45,6 +45,7 @@ class MultiScreenGui:
         mainMenuImage = ImageTk.PhotoImage(Image.open("Assets/logo-removebg-preview.png"))
         self.buttonNormal = ImageTk.PhotoImage(Image.open("Assets/GreyButton.png").resize((100, 30)))
         self.homebutton = ImageTk.PhotoImage(Image.open("Assets/homebutton.png").resize((60, 60)))
+        self.strengthbutton = ImageTk.PhotoImage(Image.open("Assets/strengthbutton.png").resize((141, 19)))
 
         # value to store what button is active to show different button
         self.activeButton = None
@@ -194,7 +195,7 @@ class MultiScreenGui:
     # create drink screen for defaults and customs
     def createScreen(self, index, name, ingredients, description, imagePath, r1, r2, is_custom = False):
         frame = tk.Frame(self.mainFrame)
-        bg_image = Image.open("Assets/background.png").resize((1200, 650))  # or whatever your frame size is
+        bg_image = Image.open("Assets/background.png").resize((1200, 650))
         bg_image_tk = ImageTk.PhotoImage(bg_image)
         background_label = tk.Label(frame, image=bg_image_tk)
         background_label.image = bg_image_tk  # prevent garbage collection
@@ -211,13 +212,13 @@ class MultiScreenGui:
         backButton.image = self.homebutton
         delButton = tk.Button(frame, text="Delete Drink", fg="red", command=lambda: self.delCustomDrink(name, index)) if is_custom else None
 
-        lightButton = tk.Button(frame, text="Light", width=19, command=lambda: self.changeStrengthValue(strengthLight, ratioDisplay, r1, r2))
-        standardButton = tk.Button(frame, text="Standard", width=19, command=lambda: self.changeStrengthValue(strengthStandard, ratioDisplay, r1, r2))
-        strongButton = tk.Button(frame, text="Strong", width=19, command=lambda: self.changeStrengthValue(strengthStrong, ratioDisplay, r1, r2))
+        lightButton = tk.Button(frame, image=self.strengthbutton, text="Light", compound='center', command=lambda: self.changeStrengthValue(strengthLight, ratioDisplay, r1, r2))
+        standardButton = tk.Button(frame, text="Standard",compound='center', image=self.strengthbutton, command=lambda: self.changeStrengthValue(strengthStandard, ratioDisplay, r1, r2))
+        strongButton = tk.Button(frame, text="Strong",compound='center', image=self.strengthbutton, command=lambda: self.changeStrengthValue(strengthStrong, ratioDisplay, r1, r2))
 
-        smallButton = tk.Button(frame, text="Small", width=19, command=lambda: self.changeSizeValue(sizeSmall, ratioDisplay, r1, r2))
-        normalButton = tk.Button(frame, text="Normal", width=19, command=lambda: self.changeSizeValue(sizeNormal, ratioDisplay, r1, r2))
-        largebutton= tk.Button(frame, text="Large", width=19, command=lambda: self.changeSizeValue(sizeLarge, ratioDisplay, r1, r2))
+        smallButton = tk.Button(frame, image=self.strengthbutton, compound='center', text="Small", command=lambda: self.changeSizeValue(sizeSmall, ratioDisplay, r1, r2))
+        normalButton = tk.Button(frame, image=self.strengthbutton, compound='center', text="Normal", command=lambda: self.changeSizeValue(sizeNormal, ratioDisplay, r1, r2))
+        largebutton= tk.Button(frame, image=self.strengthbutton, compound='center', text="Large", command=lambda: self.changeSizeValue(sizeLarge, ratioDisplay, r1, r2))
 
         ratioDisplay = tk.Label(frame, text=f"{r1 * strengthValue * sizeValue}:{r2 * strengthValue * sizeValue}", height=3, width=9, borderwidth=5, relief='ridge', font=("georgia", 19), bg='orange', wraplength=600)
 
@@ -238,12 +239,12 @@ class MultiScreenGui:
         ratioDisplay.place(x=77, y=200)
         strengthLabel.place(x=77, y=320)
         weightLabel.place(x=77, y=500)
-        lightButton.place(x=78, y=390)
-        standardButton.place(x=78, y=415)
-        strongButton.place(x=78, y=440)
-        smallButton.place(x=78, y=570)
-        normalButton.place(x=78, y=595)
-        largebutton.place(x=78, y=620)
+        lightButton.place(x=76, y=390)
+        standardButton.place(x=76, y=415)
+        strongButton.place(x=76, y=440)
+        smallButton.place(x=76, y=570)
+        normalButton.place(x=76, y=595)
+        largebutton.place(x=76, y=620)
         if delButton:
             delButton.place(x=700, y=0)
 

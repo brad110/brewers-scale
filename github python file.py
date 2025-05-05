@@ -52,6 +52,8 @@ class MultiScreenGui:
         # value to store what button is active to show different button
         self.activeButton = None
         
+        
+
         # creates buttons
         self.screens = {}
         self.buttonList = []
@@ -70,15 +72,14 @@ class MultiScreenGui:
         for i, (name, description, image, drink, r1, r2) in enumerate(zip(coffeeNames, ingredientDescriptions, imagePaths, drinkDescriptions, ratioCounterValues1, ratioCounterValues2), start=1):
             self.createScreen(i, name, description, drink, image, r1, r2)
 
+        # button for adding new drink
+        self.addNewBtn = tk.Button(self.menuFrame, text= "New Drink", font=("Georiga", 12),  bg='lightgray', image=self.buttonNormal, borderwidth=0, height = 45, width= 190, compound='center', command = self.customDrinkPopup)
+        self.addNewBtn.pack(pady=1, fill=tk.X)
         # loop creates screens for custom drinks in json file
         customDrinkIndex = len(coffeeNames) + 1
         for name, data in self.customDrinks.items():
             self.createCustomScreen(customDrinkIndex, name, data)
             customDrinkIndex += 1
-
-        # button for adding new drink
-        addNewBtn = tk.Button(self.menuFrame, text= "New Drink", font=("Georiga", 12),  bg='lightgray', image=self.buttonNormal, borderwidth=0, height = 45, width= 190, compound='center', command = self.customDrinkPopup)
-        addNewBtn.pack(pady=10, fill=tk.X)
 
         
 
@@ -202,38 +203,53 @@ class MultiScreenGui:
     def delCustomDrink(self, name, screenID):
         if messagebox.askyesno("Delete", f"Delete '{name}'?"):
             if name in self.customDrinks:
-                # remove from data and save
+                # Remove from data and save
                 del self.customDrinks[name]
                 self.saveCustomDrinks()
 
-                # destroys the screen
+                # Destroy the screen
                 if screenID in self.screens:
                     self.screens[screenID].destroy()
                     del self.screens[screenID]
 
-                # finds and removes the button by name
+                # Remove the button from buttonList
                 for i, btn in enumerate(self.buttonList):
                     if btn.cget("text") == name:
                         btn.destroy()
                         del self.buttonList[i]
                         break  
 
+                # Repack all buttons to adjust layout
+                self.repackMenuButtons()
+
+                # Show the main screen
                 self.showScreen(0)
                 self.activeButton = None
 
-                # re-bind buttons with correct indices
-                for i, btn in enumerate(self.buttonList, start=1):
-                    btn.configure(command=lambda i=i, b=btn: self.buttonPressed(i, b))
-    
+    def repackMenuButtons(self):
+        # this function handles the error it causes after deleting custom drinks and the buttons not packing correctly
+        for widget in self.menuFrame.winfo_children():
+            widget.pack_forget()
+
+        for btn in self.buttonList:
+            btn.pack(pady=1, fill=tk.X)
+
+        self.addNewBtn.pack(pady=1, fill=tk.X)
+
     # creates button and new screen for custom drinks
     def createCustomScreen(self, screenID, name, data):
-        btn = tk.Button(self.menuFrame, text=name, font=("Georgia", 12), bg='lightgray', image=self.buttonNormal, borderwidth=0, height=60, width=190, compound='center')
+        btn = tk.Button(self.menuFrame, text=name, font=("Georgia", 12), bg='lightgray', image=self.buttonNormal, borderwidth=0, height=45, width=190, compound='center')
         btn.normalImage = self.buttonNormal
         btn.pressedImage = self.pressedButtonImage
-        btn.pack(pady=1, fill=tk.X)
+        btn.pack(pady=1, fill=tk.X, before=self.addNewBtn)
         btn.configure(command=lambda i=screenID, b=btn: self.buttonPressed(i, b))
         self.buttonList.append(btn)
+        self.menuFrame.update_idletasks()
+        self.menuFrame.master.configure(scrollregion=self.menuFrame.master.bbox("all"))
+        self.repackMenuButtons()
         self.createScreen(screenID, name, data["ingredients"], data["description"], data["image"], data["r1"], data["r2"], is_custom=True)
+
+        
     
     # create drink screen for defaults and customs
     def createScreen(self, index, name, ingredients, description, imagePath, r1, r2, is_custom = False):
@@ -296,14 +312,19 @@ class MultiScreenGui:
     
     def showScreen(self, screenNumber):
         # removes current frame so it can display new screen
+        if screenNumber == 0 or screenNumber == 'info':
+            if self.activeButton:
+                try:
+                    self.activeButton.config(bg='lightgray', image=self.activeButton.normalImage)
+                except tk.TclError:
+                    pass
+                self.activeButton = None
+
         for widget in self.mainFrame.winfo_children():
             widget.pack_forget()
 
-        # displays the selected screen
-        if screenNumber == 'info':
-            self.screens['info'].pack(expand=True, fill=tk.BOTH)
-        else:
-            self.screens[screenNumber].pack(expand=True, fill=tk.BOTH)
+
+        self.screens[screenNumber].pack(expand=True, fill=tk.BOTH)
     
     # function for detecting if button is pressed
     def buttonPressed(self, screenNumber, button):

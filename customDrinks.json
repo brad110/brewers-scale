@@ -1,1 +1,9 @@
-{}
+{
+    "n": {
+        "description": "n",
+        "ingredients": "n, n",
+        "image": "Assets/customDefault.png",
+        "r1": 2.0,
+        "r2": 3.0
+    }
+}

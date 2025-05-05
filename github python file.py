@@ -14,7 +14,7 @@ sizeValue = sizeNormal
 class MultiScreenGui:
     def __init__(self, root):
         self.root = root
-        self.root.title("Brewer's Scale")
+        self.root.title("Brewer's Complement")
         self.root.geometry("1200x650")
 
         # Load the background image for the content frame
@@ -45,6 +45,7 @@ class MultiScreenGui:
         mainMenuImage = ImageTk.PhotoImage(Image.open("Assets/logo-removebg-preview.png"))
         self.buttonNormal = ImageTk.PhotoImage(Image.open("Assets/GreyButton.png").resize((100, 30)))
         self.homebutton = ImageTk.PhotoImage(Image.open("Assets/homebutton.png").resize((60, 60)))
+        self.homebuttonWhiteBG = ImageTk.PhotoImage(Image.open("Assets/homebuttonWhiteBG.png").resize((60, 60)))
         self.strengthbutton = ImageTk.PhotoImage(Image.open("Assets/strengthbutton.png").resize((141, 19)))
         self.pressedButtonImage = ImageTk.PhotoImage(Image.open("Assets/buttonPressed.png").resize((100, 30)))
 
@@ -83,14 +84,35 @@ class MultiScreenGui:
 
         # Main menu screen
         self.mainScreen = tk.Frame(self.mainFrame, bg='white')
-        mainLabel = tk.Label(self.mainScreen, text="Brewer's Scale", font=("Georgia", 20), bg='white')
+        mainLabel = tk.Label(self.mainScreen, text="Brewer's Complement", font=("Segoe UI", 30, "bold"), bg='white')
         mainLabel.pack(pady=20)
         my_label = tk.Label(self.mainScreen, image=mainMenuImage, bg='WHITE')
         my_label.image = mainMenuImage
         my_label.pack()
+        infoButton = tk.Button(self.mainScreen, text="Info", font=("Arial", 12, "bold"), bg="lightgray", command=self.showInfoWindow)
+        infoButton.pack(pady=10)
         self.screens[0] = self.mainScreen
 
         self.showScreen(0)  # shows main screen
+
+    def showInfoWindow(self):
+        infoFrame = tk.Frame(self.mainFrame, bg='white')
+        title = tk.Label(infoFrame, text="About Brewer's Complement", font=("Segoe UI", 26, "bold"), bg="white")
+        title.pack(pady=20)
+
+                                    # put info text here #
+        description = tk.Label(infoFrame, text="test text", font=("Georgia", 16), justify="center", height=5, width=34, borderwidth=5, relief='ridge', bg='lightgrey', wraplength=570)
+        description.pack(pady=10)
+
+        closeButton = tk.Button(infoFrame, text="Back to Main Menu", font=("Georgia", 14), bg="lightgray", image=self.homebuttonWhiteBG, borderwidth=0, height=57, width=57, command=lambda: self.closeInfoWindow(infoFrame))
+        closeButton.image = self.homebuttonWhiteBG
+        closeButton.place(x=2, y=00)
+        self.screens['info'] = infoFrame
+        self.showScreen('info')
+    
+    def closeInfoWindow(self, infoFrame):
+        infoFrame.destroy()
+        self.showScreen(0)
 
     # loads data from json file for saved drinks
     def loadCustomDrinks(self):
@@ -122,6 +144,8 @@ class MultiScreenGui:
     def customDrinkPopup(self):
         top = tk.Toplevel(self.root)
         top.title("Add New Drink")
+        top.geometry("350x250+600+300")
+        top.resizable(False, False)
 
         # entry fields for name, decription, ingredients
         tk.Label(top, text="Name:").pack()
@@ -136,11 +160,11 @@ class MultiScreenGui:
         ingredientEntry = tk.Entry(top)
         ingredientEntry.pack()
 
-        tk.Label(top, text="Ingredient 1 ratio:").pack()
+        tk.Label(top, text="Ingredient 1 Ratio:").pack()
         r1Entry = tk.Entry(top)
         r1Entry.pack()
 
-        tk.Label(top, text="Ingredient 2 ratio:").pack()
+        tk.Label(top, text="Ingredient 2 Ratio:").pack()
         r2Entry = tk.Entry(top)
         r2Entry.pack()
 
@@ -274,8 +298,12 @@ class MultiScreenGui:
         # removes current frame so it can display new screen
         for widget in self.mainFrame.winfo_children():
             widget.pack_forget()
+
         # displays the selected screen
-        self.screens[screenNumber].pack(expand=True, fill=tk.BOTH)
+        if screenNumber == 'info':
+            self.screens['info'].pack(expand=True, fill=tk.BOTH)
+        else:
+            self.screens[screenNumber].pack(expand=True, fill=tk.BOTH)
     
     # function for detecting if button is pressed
     def buttonPressed(self, screenNumber, button):

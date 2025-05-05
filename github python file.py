@@ -134,6 +134,14 @@ class MultiScreenGui:
         ingredientEntry = tk.Entry(top)
         ingredientEntry.pack()
 
+        tk.Label(top, text="Ingredient 1 ratio:").pack()
+        r1Entry = tk.Entry(top)
+        r1Entry.pack()
+
+        tk.Label(top, text="Ingredient 2 ratio:").pack()
+        r2Entry = tk.Entry(top)
+        r2Entry.pack()
+
         # setting up default image used for custom drinks
         defaultImgPath = "Assets/customDefault.png"
         # save drink button
@@ -142,13 +150,21 @@ class MultiScreenGui:
             description = dscEntry.get()
             ingredients = ingredientEntry.get()
             image = defaultImgPath
+            try:
+                r1 = float(r1Entry.get())
+                r2 = float(r2Entry.get())
+            except ValueError:
+                messagebox.showerror("Invalid Input", "Ratio values must be numbers.")
+                return
 
             if name and image:
                 self.customDrinks[name] = {
                     "description": description,
                     "ingredients": ingredients,
-                    "image": image
-                }
+                    "image": image,
+                    "r1": r1,
+                    "r2": r2
+                    }
                 self.saveCustomDrinks()
                 index = len(self.screens)
                 self.createCustomScreen(index, name, self.customDrinks[name])
@@ -190,7 +206,7 @@ class MultiScreenGui:
         btn.pack(pady=1, fill=tk.X)
         btn.configure(command=lambda i=screenID, b=btn: self.buttonPressed(i, b))
         self.buttonList.append(btn)
-        self.createScreen(screenID, name, data["ingredients"], data["description"], data["image"], is_custom=True)
+        self.createScreen(screenID, name, data["ingredients"], data["description"], data["image"], data["r1"], data["r2"], is_custom=True)
     
     # create drink screen for defaults and customs
     def createScreen(self, index, name, ingredients, description, imagePath, r1, r2, is_custom = False):

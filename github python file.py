@@ -102,7 +102,7 @@ class MultiScreenGui:
         title.pack(pady=20)
 
                                     # put info text here #
-        description = tk.Label(infoFrame, text="test text", font=("Georgia", 16), justify="center", height=5, width=34, borderwidth=5, relief='ridge', bg='lightgrey', wraplength=570)
+        description = tk.Label(infoFrame, text="The Brewer's Scale is an application designed for use during the coffee brewing process. Some additional information is needed in order to accurately use this application. For each template, the ratios of ingredients will not have specifications for what order they appear in. This is because the ratios are meant to be read in the order that they appear in the 'ingredients' section of each template, from left to right.", font=("Georgia", 16), justify="center", height=305, width=76, borderwidth=5, relief='ridge', bg='lightgrey', wraplength=570)
         description.pack(pady=10)
 
         closeButton = tk.Button(infoFrame, text="Back to Main Menu", font=("Georgia", 14), bg="lightgray", image=self.homebuttonWhiteBG, borderwidth=0, height=57, width=57, command=lambda: self.closeInfoWindow(infoFrame))

@@ -148,25 +148,32 @@ class MultiScreenGui:
         top.geometry("350x250+600+300")
         top.resizable(False, False)
 
+        # validation command for character limit
+        vcnd = (top.register(self.validate_name), '%P')
+        vcdd = (top.register(self.validate_description), '%P')
+        vcid = (top.register(self.validate_ingredients), '%P')
+        vcr1d = (top.register(self.validate_ingredientratio), '%P')
+        vcr2d = (top.register(self.validate_ingredientratio2), '%P')
+
         # entry fields for name, decription, ingredients
         tk.Label(top, text="Name:").pack()
-        nameEntry = tk.Entry(top)
+        nameEntry = tk.Entry(top, validate='key', validatecommand=vcnd)
         nameEntry.pack()
 
         tk.Label(top, text="Description:").pack()
-        dscEntry = tk.Entry(top)
+        dscEntry = tk.Entry(top, validate='key', validatecommand=vcdd)
         dscEntry.pack()
 
         tk.Label(top, text="Ingredients:").pack()
-        ingredientEntry = tk.Entry(top)
+        ingredientEntry = tk.Entry(top, validate='key', validatecommand=vcid)
         ingredientEntry.pack()
 
         tk.Label(top, text="Ingredient 1 Ratio:").pack()
-        r1Entry = tk.Entry(top)
+        r1Entry = tk.Entry(top, validate='key', validatecommand=vcr1d)
         r1Entry.pack()
 
         tk.Label(top, text="Ingredient 2 Ratio:").pack()
-        r2Entry = tk.Entry(top)
+        r2Entry = tk.Entry(top, validate='key', validatecommand=vcr2d)
         r2Entry.pack()
 
         # setting up default image used for custom drinks
@@ -198,6 +205,26 @@ class MultiScreenGui:
                 top.destroy()
 
         tk.Button(top, text = "Save", command = saveDrink).pack(pady = 10)
+    
+    # validation method for limiting name length
+    def validate_name(self, new_value):
+        return len(new_value) <= 20
+    
+    # validation method for limiting description length
+    def validate_description(self, new_value):
+        return len(new_value) <= 350
+    
+    # validaiton method for limiting ingredients length
+    def validate_ingredients(self, new_value):
+        return len(new_value) <= 60
+    
+    # validaiton method for limiting ingredient 1 ratio length
+    def validate_ingredientratio(self, new_value):
+        return len(new_value) <= 3
+    
+    # validaiton method for limiting ingredients length
+    def validate_ingredientratio2(self, new_value):
+        return len(new_value) <= 3
     
     # deletes custom drink by name and screen
     def delCustomDrink(self, name, screenID):
